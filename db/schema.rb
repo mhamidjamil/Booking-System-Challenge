@@ -10,17 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_24_112101) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_24_152150) do
   create_table "bookings", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "room_id", null: false
     t.datetime "start_time"
     t.datetime "end_time"
     t.string "status"
     t.decimal "total_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["room_id"], name: "index_bookings_on_room_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
@@ -31,6 +29,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_24_112101) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "booking_id"
+    t.index ["booking_id"], name: "index_rooms_on_booking_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,6 +41,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_24_112101) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "bookings", "rooms"
   add_foreign_key "bookings", "users"
+  add_foreign_key "rooms", "bookings"
 end
