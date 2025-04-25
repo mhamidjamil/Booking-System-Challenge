@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :bookings do
         member do
           post "cancel_booking"
+          get "audit_logs"
         end
       end
     end

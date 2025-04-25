@@ -1,6 +1,7 @@
 class Booking < ApplicationRecord
   belongs_to :user
   has_many :rooms
+  has_many :booking_audit_logs, dependent: :destroy
 
   validates :start_time, :end_time, :status, presence: true
   validate :max_three_rooms, on: :create
