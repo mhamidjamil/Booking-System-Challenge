@@ -3,6 +3,8 @@ class BookingAuditLog < ApplicationRecord
   belongs_to :booking
 
   def parsed_metadata
-    JSON.parse(metadata) rescue {}
+    JSON.parse(metadata)
+  rescue StandardError
+    {}
   end
 end

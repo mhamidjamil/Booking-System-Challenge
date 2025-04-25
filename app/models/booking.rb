@@ -1,6 +1,6 @@
 class Booking < ApplicationRecord
   belongs_to :user
-  has_many :rooms
+  has_many :rooms, dependent: nil
   has_many :booking_audit_logs, dependent: :destroy
 
   validates :start_time, :end_time, :status, presence: true
@@ -8,7 +8,7 @@ class Booking < ApplicationRecord
   validate :rooms_availability
   validate :only_active_rooms
 
-  enum status: { pending: "pending", confirmed: "confirmed", cancelled: "cancelled" }
+  enum :status, { pending: 'pending', confirmed: 'confirmed', cancelled: 'cancelled' }
 
   before_save :calculate_price
 
@@ -19,21 +19,19 @@ class Booking < ApplicationRecord
   end
 
   def max_three_rooms
-    errors.add(:base, "Cannot book more than 3 rooms") if rooms.size > 3
+    errors.add(:base, 'Cannot book more than 3 rooms') if rooms.size > 3
   end
 
   def rooms_availability
     rooms.each do |room|
       conflicting_booking = Booking.joins(:rooms)
-                                  .where(rooms: { id: room.id })
-                                  .where.not(id: id)
-                                  .where.not(status: "cancelled")
-                                  .where("start_time < ? AND end_time > ?", end_time, start_time)
-                                  .exists?
+                                   .where(rooms: { id: room.id })
+                                   .where.not(id: id)
+                                   .where.not(status: 'cancelled')
+                                   .exists?(['start_time < ? AND end_time > ?', end_time,
+                                             start_time])
 
-      if conflicting_booking
-        errors.add(:base, "Room #{room.name} is already booked for this time period")
-      end
+      errors.add(:base, "Room #{room.name} is already booked for this time period") if conflicting_booking
     end
   end
 
