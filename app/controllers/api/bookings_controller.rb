@@ -16,9 +16,8 @@ class Api::BookingsController < ApplicationController
 
     # Assign rooms to booking
     room_ids = params[:booking][:room_ids] || []
-    rooms = Room.where(id: room_ids, active: true)
+    rooms = Room.where(id: room_ids)
 
-    # Check if all requested rooms were found and are available
     if room_ids.size != rooms.size
       missing_rooms = room_ids - rooms.pluck(:id)
       render json: {
@@ -30,7 +29,10 @@ class Api::BookingsController < ApplicationController
     booking.rooms = rooms
 
     if booking.save
-      render json: {
+      duration_hours = ((booking.end_time - booking.start_time) / 3600).ceil
+      discount_applied = duration_hours > 4 ? (booking.total_price * 0.1).round(2) : 0
+
+      response_data = {
         message: "Booking created successfully.",
         booking: {
           id: booking.id,
@@ -39,9 +41,21 @@ class Api::BookingsController < ApplicationController
           start_time: booking.start_time,
           end_time: booking.end_time,
           total_price: booking.total_price,
-          status: booking.status
+          status: booking.status,
+          duration_hours: duration_hours
+        },
+        pricing_details: {
+          base_price: (booking.total_price / (discount_applied > 0 ? 0.9 : 1)).round(2),
+          discount_applied: discount_applied,
+          discount_percentage: discount_applied > 0 ? "10%" : "0%"
         }
-      }, status: :created
+      }
+
+      if discount_applied > 0
+        response_data[:message] = "Booking created successfully with 10% discount for #{duration_hours} hour booking"
+      end
+
+      render json: response_data, status: :created
     else
       render json: { errors: booking.errors.full_messages }, status: :unprocessable_entity
     end
@@ -61,8 +75,33 @@ class Api::BookingsController < ApplicationController
   end
 
   def cancel_booking
-    @booking.update(status: "cancelled")
-    render json: { message: "Booking cancelled successfully" }
+    if @booking.cancelled?
+      render json: { error: "Booking is already cancelled" }, status: :unprocessable_entity
+      return
+    end
+
+    cancellation_time = Time.current
+    booking_start_time = @booking.start_time
+    hours_before_start = ((booking_start_time - cancellation_time) / 1.hour).round
+
+    if hours_before_start < 24
+      refund_amount = @booking.total_price * 0.95
+      @booking.update(status: "cancelled", total_price: @booking.total_price * 0.05)
+      render json: {
+        message: "Booking cancelled successfully with 5% cancellation fee",
+        refund_amount: refund_amount.round(2),
+        cancellation_fee: (@booking.total_price * 0.05).round(2),
+        status: "cancelled"
+      }
+    else
+      @booking.update(status: "cancelled")
+      render json: {
+        message: "Booking cancelled successfully with full refund",
+        refund_amount: @booking.total_price.round(2),
+        cancellation_fee: 0,
+        status: "cancelled"
+      }
+    end
   end
 
   private
