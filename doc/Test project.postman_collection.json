@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "0d4d7109-c5f8-4c7e-a1ff-620f01d75337",
+		"name": "Test project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19034234",
+		"_collection_link": "https://swhs-space-5617.postman.co/workspace/New-Team-Workspace~6c5686fb-280b-472f-8f6a-1547b85810ca/collection/19034234-0d4d7109-c5f8-4c7e-a1ff-620f01d75337?action=share&source=collection_link&creator=19034234"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/users",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\":{\r\n        \"name\": \"test1\",\r\n        \"email\": \"test1@nomail.com\",\r\n        \"role\": \"customer\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/users",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "Create Room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"room\":{\r\n        \"name\": \"room 3\",\r\n        \"capacity\": \"2\",\r\n        \"price_per_hour\": 3200,\r\n        \"active\": false\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/rooms",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rooms",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\":{\r\n        \"name\": \"test\",\r\n        \"email\": \"test@nomail.com\",\r\n        \"role\": \"customer\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/rooms",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "booking",
+			"item": [
+				{
+					"name": "Create booking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n//   \"booking\": {\r\n//     \"start_time\": \"2025-04-26T10:00:00Z\",\r\n//     \"end_time\": \"2025-04-26T14:00:00Z\",\r\n//     \"status\": \"confirmed\",\r\n//     \"room_ids\": [2, 5, 7]\r\n//     // \"room_ids\": [10]\r\n//   }\r\n\r\n\r\n  \"booking\": {\r\n    \"start_time\": \"2025-04-25T03:00:00Z\",\r\n    \"end_time\": \"2025-04-25T09:00:00Z\",\r\n    \"status\": \"confirmed\",\r\n    \"room_ids\": [16]\r\n  }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/users/1/bookings",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel booking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n//   \"booking\": {\r\n//     \"start_time\": \"2025-04-26T10:00:00Z\",\r\n//     \"end_time\": \"2025-04-26T14:00:00Z\",\r\n//     \"status\": \"confirmed\",\r\n//     \"room_ids\": [2, 5, 7]\r\n//     // \"room_ids\": [10]\r\n//   }\r\n\r\n\r\n  \"booking\": {\r\n    \"start_time\": \"2025-05-01T10:00:00Z\",\r\n    \"end_time\": \"2025-05-01T12:00:00Z\",\r\n    \"status\": \"confirmed\",\r\n    \"room_ids\": [1]\r\n  }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/users/1/bookings/13/cancel_booking",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"bookings",
+								"13",
+								"cancel_booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/users/1/bookings",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://booking.dolphinpk.com/api/users/1/bookings/12/audit_logs",
+							"protocol": "https",
+							"host": [
+								"booking",
+								"dolphinpk",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"bookings",
+								"12",
+								"audit_logs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
